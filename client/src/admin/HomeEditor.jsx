@@ -21,154 +21,149 @@ export default function HomeEditor() {
     });
   };
 
-  const handleSave = () => {
-    axios.put('http://localhost:5000/api/home', data)
-      .then(() => alert('Saved!'));
-  };
+const handleSave = () => {
+  console.log('Sending data:', data);
+  axios
+    .put('http://localhost:5000/api/home', data)
+    .then(() => alert('Saved!'))
+    .catch((err) => {
+      console.error('Save failed:', err.response?.data || err.message);
+      alert('Failed to save');
+    });
+};
 
-  if (!data) return <p className="text-center text-gray-500 text-lg animate-pulse py-12">Loading...</p>;
+
+  if (!data) return <p>Loading...</p>;
 
   return (
-    <div className="min-h-screen py-10 px-6">
-      <div className="max-w-7xl mx-auto bg-blue-200 rounded-2xl shadow-lg p-8 space-y-8">
-        <h1 className="text-3xl font-extrabold text-gray-800 text-center">Edit Home Page</h1>
+    <div className="p-6 space-y-6">
+      <h1 className="text-2xl font-bold">Edit Home Page</h1>
 
-        {/* Title & Description */}
-        <div className="space-y-4">
-          <input
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-            placeholder="Title"
-            value={data.title}
-            onChange={e => handleChange('title', e.target.value)}
-          />
-          <textarea
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-vertical min-h-[100px]"
-            placeholder="Description"
-            value={data.description}
-            onChange={e => handleChange('description', e.target.value)}
-          />
-        </div>
-
-        {/* Hero Section */}
-        <div className="border border-gray-200 rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Hero Section</h2>
-          <div className="space-y-3">
-            {['badge', 'heading', 'subtext', 'primaryButton', 'secondaryButton'].map(field => (
-              <input
-                key={field}
-                className="w-full px-4 py-3 border border-gray-800  bg-blue-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                value={data.hero?.[field] || ''}
-                onChange={e => handleChange(`hero.${field}`, e.target.value)}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="border border-gray-200 rounded-xl p-6 ">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Stats</h2>
-          <div className="space-y-4">
-            {data.stats?.map((stat, i) => (
-              <div key={i} className="border border-gray-200 p-4 rounded-lg bg-white shadow-sm">
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 mb-2"
-                  placeholder="Label"
-                  value={stat.label}
-                  onChange={e => handleChange(`stats.${i}.label`, e.target.value)}
-                />
-                <input
-                  type="number"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 mb-2"
-                  placeholder="Value"
-                  value={stat.value}
-                  onChange={e => handleChange(`stats.${i}.value`, e.target.value)}
-                />
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 mb-2"
-                  placeholder="Suffix"
-                  value={stat.suffix}
-                  onChange={e => handleChange(`stats.${i}.suffix`, e.target.value)}
-                />
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Icon"
-                  value={stat.icon}
-                  onChange={e => handleChange(`stats.${i}.icon`, e.target.value)}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* About */}
-        <div className="border border-gray-200 rounded-xl p-6 bg-gray-50">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">About Section</h2>
-          <input
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 mb-3"
-            placeholder="Heading"
-            value={data.about?.heading}
-            onChange={e => handleChange('about.heading', e.target.value)}
-          />
-          <textarea
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-vertical min-h-[100px] mb-4"
-            placeholder="Description"
-            value={data.about?.description}
-            onChange={e => handleChange('about.description', e.target.value)}
-          />
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">About Cards</h3>
-          <div className="space-y-4">
-            {data.about?.cards?.map((card, i) => (
-              <div key={i} className="border border-gray-200 p-4 rounded-lg bg-white shadow-sm">
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 mb-2"
-                  placeholder="Card Title"
-                  value={card.title}
-                  onChange={e => handleChange(`about.cards.${i}.title`, e.target.value)}
-                />
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 mb-2"
-                  placeholder="Card Description"
-                  value={card.description}
-                  onChange={e => handleChange(`about.cards.${i}.description`, e.target.value)}
-                />
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Icon"
-                  value={card.icon}
-                  onChange={e => handleChange(`about.cards.${i}.icon`, e.target.value)}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Contact */}
-        <div className="border border-gray-200 rounded-xl p-6 bg-gray-50">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Contact Info</h2>
-          <div className="space-y-3">
-            {['location', 'email', 'phone'].map(field => (
-              <input
-                key={field}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                value={data.contact?.[field] || ''}
-                onChange={e => handleChange(`contact.${field}`, e.target.value)}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Save Button */}
-        <div className="text-center">
-          <button
-            onClick={handleSave}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:-translate-y-1 shadow-md"
-          >
-            Save Changes
-          </button>
-        </div>
+      {/* Title & Description */}
+      <div>
+        <input
+          className="border p-2 mb-2 w-full"
+          placeholder="Title"
+          value={data.title}
+          onChange={e => handleChange('title', e.target.value)}
+        />
+        <textarea
+          className="border p-2 w-full"
+          placeholder="Description"
+          value={data.description}
+          onChange={e => handleChange('description', e.target.value)}
+        />
       </div>
+
+      {/* Hero Section */}
+      <div className="border p-4 rounded">
+        <h2 className="font-semibold mb-2">Hero Section</h2>
+        {['badge', 'heading', 'subtext', 'primaryButton', 'secondaryButton'].map(field => (
+          <input
+            key={field}
+            className="border p-2 mb-2 w-full"
+            placeholder={field}
+            value={data.hero?.[field] || ''}
+            onChange={e => handleChange(`hero.${field}`, e.target.value)}
+          />
+        ))}
+      </div>
+
+      {/* Stats */}
+      <div className="border p-4 rounded">
+        <h2 className="font-semibold mb-2">Stats</h2>
+        {data.stats?.map((stat, i) => (
+          <div key={i} className="mb-4 border p-2 rounded">
+            <input
+              className="border p-1 mb-1 w-full"
+              placeholder="Label"
+              value={stat.label}
+              onChange={e => handleChange(`stats.${i}.label`, e.target.value)}
+            />
+            <input
+              type="number"
+              className="border p-1 mb-1 w-full"
+              placeholder="Value"
+              value={stat.value}
+              onChange={e => handleChange(`stats.${i}.value`, e.target.value)}
+            />
+            <input
+              className="border p-1 mb-1 w-full"
+              placeholder="Suffix"
+              value={stat.suffix}
+              onChange={e => handleChange(`stats.${i}.suffix`, e.target.value)}
+            />
+            <input
+              className="border p-1 w-full"
+              placeholder="Icon"
+              value={stat.icon}
+              onChange={e => handleChange(`stats.${i}.icon`, e.target.value)}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* About */}
+      <div className="border p-4 rounded">
+        <h2 className="font-semibold mb-2">About Section</h2>
+        <input
+          className="border p-2 mb-2 w-full"
+          placeholder="Heading"
+          value={data.about?.heading}
+          onChange={e => handleChange('about.heading', e.target.value)}
+        />
+        <textarea
+          className="border p-2 mb-4 w-full"
+          placeholder="Description"
+          value={data.about?.description}
+          onChange={e => handleChange('about.description', e.target.value)}
+        />
+        <h3 className="font-semibold mb-2">About Cards</h3>
+        {data.about?.cards?.map((card, i) => (
+          <div key={i} className="mb-4 border p-2 rounded">
+            <input
+              className="border p-1 mb-1 w-full"
+              placeholder="Card Title"
+              value={card.title}
+              onChange={e => handleChange(`about.cards.${i}.title`, e.target.value)}
+            />
+            <input
+              className="border p-1 mb-1 w-full"
+              placeholder="Card Description"
+              value={card.description}
+              onChange={e => handleChange(`about.cards.${i}.description`, e.target.value)}
+            />
+            <input
+              className="border p-1 w-full"
+              placeholder="Icon"
+              value={card.icon}
+              onChange={e => handleChange(`about.cards.${i}.icon`, e.target.value)}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Contact */}
+      <div className="border p-4 rounded">
+        <h2 className="font-semibold mb-2">Contact Info</h2>
+        {['location', 'email', 'phone'].map(field => (
+          <input
+            key={field}
+            className="border p-2 mb-2 w-full"
+            placeholder={field}
+            value={data.contact?.[field] || ''}
+            onChange={e => handleChange(`contact.${field}`, e.target.value)}
+          />
+        ))}
+      </div>
+
+      {/* Save Button */}
+      <button
+        onClick={handleSave}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Save
+      </button>
     </div>
   );
 }

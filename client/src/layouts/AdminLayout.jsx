@@ -6,8 +6,8 @@ export default function AdminLayout() {
     <div className="flex h-screen">
       <aside className="w-64 bg-gray-200 p-4">
         <h2 className="font-bold text-lg mb-4">Admin Panel</h2>
-        <nav className="space-y-2">
-          <Link to="/admin/home">Edit Home</Link>
+        <nav className="space-y-5">
+          <Link to="/admin/home">Edit Home</Link><br></br>
           <Link to="/admin/about">Edit About</Link>
         </nav>
       </aside>
